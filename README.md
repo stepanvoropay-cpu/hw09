@@ -24,7 +24,8 @@ Password inactive                                       : never
 Account expires                                         : never
 Minimum number of days between password change          : 0
 Maximum number of days between password change          : 45
-Number of days of warning before password expires       : 7```
+Number of days of warning before password expires       : 7
+```
 
 Настроим количество попыток входа и время блокировки:
 
@@ -45,7 +46,8 @@ auth    sufficient    pam_faillock.so    authsucc
 
 account required                        pam_permit.so
 
-account required pam_faillock.so```
+account required pam_faillock.so
+```
 
 ## Задание 2
 
@@ -59,7 +61,8 @@ account required pam_faillock.so```
 └─$ sudo usermod -aG galera dot
                                                                                                                                                    
 ┌──(deathpod㉿kali)-[~]
-└─$ sudo usermod -aG galera pig```
+└─$ sudo usermod -aG galera pig
+```
 
 Создаем общую директорию, назначаем владельца и настраиваем доступ:
 
@@ -77,7 +80,8 @@ account required pam_faillock.so```
 └─# ls -lah /home/galera_int 
 total 8.0K
 drwxrwx--- 2 root galera 4.0K May  9 11:57 .
-drwxr-xr-x 6 root root   4.0K May  9 11:57 ..```
+drwxr-xr-x 6 root root   4.0K May  9 11:57 ..
+```
 
 Настраиваем автоматическое сохранение принадлежности:
 
@@ -90,7 +94,8 @@ drwxr-xr-x 6 root root   4.0K May  9 11:57 ..```
 total 8.0K
 drwxrws--- 2 root galera 4.0K May  9 12:03 .
 drwxr-xr-x 6 root root   4.0K May  9 11:57 ..
--rw-rw-r-- 1 pig  galera    0 May  9 12:03 123.txt```
+-rw-rw-r-- 1 pig  galera    0 May  9 12:03 123.txt
+```
 
 ## Задание 3
 
@@ -106,7 +111,8 @@ drwxr-xr-x 6 root root   4.0K May  9 11:57 ..
         /** mr,
         /usr/bin/myapp mr,
         /usr/bin/bash ix,
-}```
+}
+```
 
 Загружаем профиль и проверяем работает ли он:
 
@@ -131,14 +137,16 @@ apparmor module is loaded.
 0 processes are in prompt mode.
 0 processes are in kill mode.
 0 processes are unconfined but have a profile defined.
-0 processes are in mixed mode.```
+0 processes are in mixed mode.
+```
 
 Проверяем на запись:
 
 ```
 ┌──(deathpod㉿kali)-[/etc/apparmor.d]
 └─$ touch 123.txt           
-touch: cannot touch '123.txt': Permission denied```
+touch: cannot touch '123.txt': Permission denied
+```
 
 ## Задание 4
 
@@ -146,31 +154,36 @@ touch: cannot touch '123.txt': Permission denied```
 
 ```
 ┌──(deathpod㉿kali)-[~]
-└─$ sudo iptables -A INPUT -s 192.168.50.25 -j DROP```
+└─$ sudo iptables -A INPUT -s 192.168.50.25 -j DROP
+```
 
 Зададим отслеживание попыток подключения:
 
 ```
 ┌──(deathpod㉿kali)-[~]
-└─$ sudo iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --set --name SSH_LIMIT```
+└─$ sudo iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --set --name SSH_LIMIT
+```
 
 Зададим блокировку при превышении количества попыток за минуту:
 
 ```
 ┌──(deathpod㉿kali)-[~]
-└─$ sudo iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 60 --hitcount 4 --name SSH_LIMIT -j DROP```
+└─$ sudo iptables -A INPUT -p tcp --dport 22 -m state --state NEW -m recent --update --seconds 60 --hitcount 4 --name SSH_LIMIT -j DROP
+```
 
 Зададим разрешение нормальных SSH-подключений, не заблокированных ранее:
 
 ```
 ┌──(deathpod㉿kali)-[~]
-└─$ sudo iptables -A INPUT -p tcp --dport 22 -m state --state NEW -j ACCEPT```
+└─$ sudo iptables -A INPUT -p tcp --dport 22 -m state --state NEW -j ACCEPT
+```
 
 Зададим разрешение уже установленных соединений или моединение оборвется:
 
 ```
 ┌──(deathpod㉿kali)-[~]
-└─$ sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT```
+└─$ sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+```
 
 Сохраним изменения, чтоб остались после перезагрузки:
 
@@ -178,7 +191,8 @@ touch: cannot touch '123.txt': Permission denied```
 ┌──(deathpod㉿kali)-[~]
 └─$ sudo netfilter-persistent save
 run-parts: executing /usr/share/netfilter-persistent/plugins.d/15-ip4tables save
-run-parts: executing /usr/share/netfilter-persistent/plugins.d/25-ip6tables save```
+run-parts: executing /usr/share/netfilter-persistent/plugins.d/25-ip6tables save
+```
 
 ## Задание 5
 
@@ -186,7 +200,8 @@ run-parts: executing /usr/share/netfilter-persistent/plugins.d/25-ip6tables save
 
 ```
 ┌──(deathpod㉿kali)-[~]
-└─$ sudo apt install -y auditd audispd-plugins```
+└─$ sudo apt install -y auditd audispd-plugins
+```
 
 Запустим сервис и включим автозагрузку:
 
@@ -196,7 +211,8 @@ run-parts: executing /usr/share/netfilter-persistent/plugins.d/25-ip6tables save
 Created symlink '/etc/systemd/system/multi-user.target.wants/auditd.service' → '/usr/lib/systemd/system/auditd.service'.
                                                                                                                                                    
 ┌──(deathpod㉿kali)-[~]
-└─$ sudo systemctl start auditd```
+└─$ sudo systemctl start auditd
+```
 
 Добавим правила отслеживания:
 
@@ -209,7 +225,8 @@ Created symlink '/etc/systemd/system/multi-user.target.wants/auditd.service' →
 -w /etc/passwd -p rwxa -k critical_passwd
 -w /etc/shadow -p rwxa -k critical_shadow
 -w /etc/sudoers -p rwxa -k critical_sudoers
--w /etc/group -p rwxa -k critical_group```
+-w /etc/group -p rwxa -k critical_group
+```
 
 Применим и проверим загруженные правила:
 
@@ -222,7 +239,8 @@ Created symlink '/etc/systemd/system/multi-user.target.wants/auditd.service' →
 -w /etc/passwd -p rwxa -k critical_passwd
 -w /etc/shadow -p rwxa -k critical_shadow
 -w /etc/sudoers -p rwxa -k critical_sudoers
--w /etc/group -p rwxa -k critical_group```
+-w /etc/group -p rwxa -k critical_group
+```
 
 Настроим отправку сообщений в системный журнал:
 
@@ -238,7 +256,8 @@ direction = out
 path = /sbin/audisp-syslog
 type = always 
 args = LOG_INFO
-format = string```
+format = string
+```
 
 Перезапустим сервисы:
 
@@ -247,7 +266,8 @@ format = string```
 └─$ systemctl restart auditd
 
 ┌──(deathpod㉿kali)-[~]
-└─$ systemctl restart rsyslog```
+└─$ systemctl restart rsyslog
+```
 
 Просмотрим события из audit.log конкретного пользователя, где comm="cat" - команда, auid - исходный пользователь, uid/euid - эффективный UID, name="/etc/passwd" - файл, к которому обратились, success=yes - разрешение доступа:
 
@@ -259,11 +279,13 @@ time->Sat May  9 17:53:22 2026
 type=PROCTITLE msg=audit(1778363602.083:1250): proctitle=636174002F6574632F706173737764
 type=PATH msg=audit(1778363602.083:1250): item=0 name="/etc/passwd" inode=133470 dev=08:01 mode=0100644 ouid=0 ogid=0 rdev=00:00 nametype=NORMAL cap_fp=0 cap_fi=0 cap_fe=0 cap_fver=0 cap_frootid=0
 type=CWD msg=audit(1778363602.083:1250): cwd="/home/deathpod"
-type=SYSCALL msg=audit(1778363602.083:1250): arch=c000003e syscall=257 success=yes exit=3 a0=ffffffffffffff9c a1=7ffcafaa520d a2=0 a3=0 items=1 ppid=46628 pid=48229 auid=1000 uid=1002 gid=1002 euid=1002 suid=1002 fsuid=1002 egid=1002 sgid=1002 fsgid=1002 tty=pts1 ses=6 comm="cat" exe="/usr/bin/cat" subj=unconfined key="critical_passwd"```
+type=SYSCALL msg=audit(1778363602.083:1250): arch=c000003e syscall=257 success=yes exit=3 a0=ffffffffffffff9c a1=7ffcafaa520d a2=0 a3=0 items=1 ppid=46628 pid=48229 auid=1000 uid=1002 gid=1002 euid=1002 suid=1002 fsuid=1002 egid=1002 sgid=1002 fsgid=1002 tty=pts1 ses=6 comm="cat" exe="/usr/bin/cat" subj=unconfined key="critical_passwd"
+```
 
 Просмотр в "syslog":
 
 ```
 ┌──(deathpod㉿kali)-[~]
-└─$ sudo grep "audit" /var/log/syslog | grep "passwd" | grep "pig"```
+└─$ sudo grep "audit" /var/log/syslog | grep "passwd" | grep "pig"
+```
 
